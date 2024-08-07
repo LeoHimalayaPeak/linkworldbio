@@ -1,17 +1,22 @@
 'use client'
 import request from '@/utils/request';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await request.post('/login', { username, password });
-      console.log('Login successful:', response);
+      if (response.code !== 200) {
+        return alert(response.msg)
+      }
+      alert('login success')
+      router.push('/login')
     } catch (error) {
       console.error('Login error:', error);
     }
